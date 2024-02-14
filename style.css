@@ -1,9 +1,13 @@
-body {
+
+.wrapper {
+  width: 100vw;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   padding: 50px 15px 15px 15px;
+  background-color: #9a9a9a;
 }
 
 .puzzle {
@@ -13,7 +17,7 @@ body {
   aspect-ratio: 1 / 1;
   border-radius:15px;
   border:5px solid #f49804;
-  background-color: #f49804;;
+  background-color: #f49804;
   margin-bottom: 20px;
 }
 .puzzle__item {
