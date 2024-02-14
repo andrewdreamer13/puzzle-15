@@ -37,19 +37,19 @@ levelBox.addEventListener('click', (event) => {
   });
  
   if(event.target.id === 'easy') {
-    maxShuffleCount = 3;
+    maxShuffleCount = 15;
     playSound(shuffleButtonSound);
     event.target.classList.add('level-button--active');
     shuffleButton.classList.remove('disabled');
   } 
   if(event.target.id === 'normal') {
-    maxShuffleCount = 40;
+    maxShuffleCount = 30;
     playSound(shuffleButtonSound);
     event.target.classList.add('level-button--active');
     shuffleButton.classList.remove('disabled');
   } 
   if(event.target.id === 'hard') {
-    maxShuffleCount = 80;
+    maxShuffleCount = 60;
     playSound(shuffleButtonSound);
     event.target.classList.add('level-button--active');
     shuffleButton.classList.remove('disabled');
