@@ -148,6 +148,7 @@ window.addEventListener("load", () => {
    
     setPositionItems(matrix);
     resetButton.classList.remove("disabled");
+    shuffleButton.classList.add("disabled");q
    
     ranger.value = savedRange;
     rangeCount.textContent = savedRange;
