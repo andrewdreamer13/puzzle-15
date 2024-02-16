@@ -30,19 +30,22 @@
         <audio class="items-move-sound" src="sounds/shuffle.mp3"></audio>
         <audio class="winner-sound" src="sounds/crowd.mp3"></audio>
       </div>
-      <div class="level-button-box">
-        <button class="level-button" id="easy">easy</button>
-        <button class="level-button" id="normal">normal</button>
-        <button class="level-button" id="hard">hard</button>
+    
+      <div class="control-box">
+        <div class="ranger-box">
+          <output for="ranger" class="range-count">0</output>
+          <input class="level-ranger" id="ranger" type="range" min="0" max="100" step="1" value="0">
+        </div>
+        <div class="shuffle-box">
+          <button class="shuffle-button disabled" id="shuffle">shuffle</button>
+          <button class="shuffle-button disabled" id="reset">reset</button>
+          <audio
+            class="shuffle-button-click"
+            src="sounds/click-button.mp3"
+          ></audio>
+        </div>
       </div>
-      <div class="shuffle-box">
-        <button class="shuffle-button disabled" id="shuffle">shuffle</button>
-        <button class="shuffle-button disabled" id="reset">reset</button>
-        <audio
-          class="shuffle-button-click"
-          src="sounds/click-button.mp3"
-        ></audio>
-      </div>
+     
     </div>
   </body>
 </html>

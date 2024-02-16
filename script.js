@@ -10,9 +10,10 @@ const resetButton = document.querySelector("#reset");
 const shuffleButtonSound = document.querySelector(".shuffle-button-click");
 const itemsMoveSound = document.querySelector(".items-move-sound");
 const soundForwinner = document.querySelector(".winner-sound");
-const levelBox = document.querySelector(".level-button-box");
 const buttons = document.querySelectorAll("button");
-const levelButtons = document.querySelectorAll(".level-button");
+const rangerBox = document.querySelector(".ranger-box");
+const ranger = document.querySelector("#ranger");
+const rangeCount = document.querySelector(".range-count");
 const countItems = 16;
 const blankNumber = 16;
 let stateChecker = false;
@@ -37,34 +38,11 @@ console.log(matrix); // [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 1
 
 setPositionItems(matrix);
 
-// choice level
+// choice level with input range
 
-levelBox.addEventListener("click", (event) => {
-  levelButtons.forEach((button) => {
-    button.classList.remove("level-button--active");
-  });
+ranger.addEventListener('input', changeLevel);
 
-  if (event.target.id === "easy") {
-    maxShuffleCount = 15;
-    playSound(shuffleButtonSound);
-    event.target.classList.add("level-button--active");
-    shuffleButton.classList.remove("disabled");
-  }
-  if (event.target.id === "normal") {
-    maxShuffleCount = 30;
-    playSound(shuffleButtonSound);
-    event.target.classList.add("level-button--active");
-    shuffleButton.classList.remove("disabled");
-  }
-  if (event.target.id === "hard") {
-    maxShuffleCount = 60;
-    playSound(shuffleButtonSound);
-    event.target.classList.add("level-button--active");
-    shuffleButton.classList.remove("disabled");
-  }
-});
-
-// shuffle items by click on te shuffle button
+// shuffle puzzle items
 
 shuffleButton.addEventListener("click", () => {
   shuffleCount = 0;
@@ -77,6 +55,7 @@ shuffleButton.addEventListener("click", () => {
       shuffleCount++;
       saveMatrixInLocalStorage();
       if (shuffleCount >= maxShuffleCount) {
+        console.log(shuffleCount)
         shuffleCount = 0;
         clearInterval(timer);
       }
@@ -90,16 +69,12 @@ shuffleButton.addEventListener("click", () => {
   });
 
   playSound(shuffleButtonSound);
+  saveRangeValueInLocalStorage();
 
-  buttons.forEach((button) => {
-    button.classList.add("disabled");
-  });
-
-  levelButtons.forEach((button) => {
-    button.classList.remove("level-button--active");
-  });
 
   resetButton.classList.remove("disabled");
+  shuffleButton.classList.add("disabled");
+  rangerBox.classList.add("ranger-blocked");
 });
 
 // returning the matrix to the start position by click on the reset button
@@ -107,14 +82,16 @@ shuffleButton.addEventListener("click", () => {
 resetButton.addEventListener("click", () => {
   playSound(shuffleButtonSound);
   puzzle.classList.add("blocked");
-  buttons.forEach((button) => {
-    button.classList.remove("disabled");
-  });
   resetButton.classList.add("disabled");
-  shuffleButton.classList.add("disabled");
   removeMatrixFromLocalStorage();
   matrix = getMatrix(items.map((item) => Number(item.dataset.matrixId)));
   setPositionItems(matrix);
+  rangerBox.classList.remove("ranger-blocked");
+  ranger.value = 0;
+  rangeCount.textContent = 0;
+  rangeCount.style.left = `${ranger.value - 4}% `;
+  removeRangeValueFromLocalStorage();
+
 });
 
 // down and up effect on the buttons
@@ -159,22 +136,57 @@ puzzle.addEventListener("click", (event) => {
   }
 });
 
-// get matrix from LocalStorage
+// get data from LocalStorage
 
 window.addEventListener("load", () => {
-  const savedMatrix = JSON.parse(localStorage.getItem("matrix"));
-  if (savedMatrix) {
+  const savedMatrix = JSON.parse(localStorage.getItem('matrix'));
+  const savedRange = JSON.parse(localStorage.getItem('rangeValue'));
+
+  if (savedMatrix && savedRange) {
     puzzle.classList.remove("blocked");
     matrix = savedMatrix;
+   
     setPositionItems(matrix);
     resetButton.classList.remove("disabled");
-    levelButtons.forEach((button) => {
-      button.classList.add("disabled");
-    });
+   
+    ranger.value = savedRange;
+    rangeCount.textContent = savedRange;
+    rangerBox.classList.add("ranger-blocked");
+    changeLevel();
+    
   }
 });
 
 // Functions - helpers
+
+function changeLevel() {
+  maxShuffleCount = ranger.value;
+  if( maxShuffleCount > 0 ) {
+    shuffleButton.classList.remove("disabled");
+  } else {
+    shuffleButton.classList.add("disabled");
+  }
+  rangeCount.textContent = maxShuffleCount;
+
+  rangeCount.style.left = `${ranger.value - 4}% `;
+
+  if( ranger.value >= 10 ) {
+    rangeCount.style.left = `${ranger.value - 6}% `;
+  }
+  if( ranger.value >= 30 ) {
+    rangeCount.style.left = `${ranger.value - 7}% `;
+  }
+  if( ranger.value >= 50 ) {
+    rangeCount.style.left = `${ranger.value - 8}% `;
+  }
+  if( ranger.value >= 70 ) {
+    rangeCount.style.left = `${ranger.value - 10}% `;
+  }
+  if( ranger.value >= 100 ) {
+    rangeCount.style.left = `${ranger.value - 12}% `;
+  }
+  
+}
 
 function randomSwap(matrix) {
   const blankCoordinates = findcoordinatesByNumber(blankNumber, matrix);
@@ -292,6 +304,10 @@ function addWonClass() {
     });
     resetButton.classList.add("disabled");
     shuffleButton.classList.add("disabled");
+    rangerBox.classList.remove("ranger-blocked");
+    ranger.value = 0;
+    rangeCount.textContent = 0;
+    rangeCount.style.left = `${ranger.value - 4}% `;
   }, 300);
 }
 
@@ -302,6 +318,14 @@ function saveMatrixInLocalStorage() {
 
 function removeMatrixFromLocalStorage() {
   localStorage.removeItem("matrix");
+}
+
+function saveRangeValueInLocalStorage() {
+  localStorage.setItem("rangeValue", JSON.stringify(ranger.value));
+}
+
+function removeRangeValueFromLocalStorage() {
+  localStorage.removeItem("rangeValue");
 }
 
 function playSound(sound) {
