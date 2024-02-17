@@ -28,6 +28,7 @@ git config --global user.name "Your Name" - set user name
    git branch -d <branch name> - deleting a branch (except the current branch) 
    git merge <branch name> - branch merging with the current branch 
    git merge -m "message" <branch name> - branch merging with the current branch and with a comment 
+   git rebase <branch name> -  branch merging with the current branch . But without commits from the inmergered branch
 
    cd <folder name> - goes to the pointed folder in the project 
    cd .. returns to the root folder in the project 

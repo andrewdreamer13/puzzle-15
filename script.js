@@ -153,7 +153,6 @@ window.addEventListener("load", () => {
     ranger.value = savedRange;
     rangeCount.textContent = savedRange;
     rangerBox.classList.add("ranger-blocked");
-    changeLevel();
     
   }
 });
@@ -161,14 +160,16 @@ window.addEventListener("load", () => {
 // Functions - helpers
 
 function changeLevel() {
+
   maxShuffleCount = ranger.value;
+
   if( maxShuffleCount > 0 ) {
     shuffleButton.classList.remove("disabled");
   } else {
     shuffleButton.classList.add("disabled");
   }
-  rangeCount.textContent = maxShuffleCount;
 
+  rangeCount.textContent = maxShuffleCount;
   rangeCount.style.left = `${ranger.value - 4}% `;
 
   if( ranger.value >= 10 ) {
